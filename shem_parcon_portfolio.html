@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shem F. Parcon — Bookkeeper Specialist</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1208;
+    --paper: #f5f0e8;
+    --cream: #ede7d5;
+    --gold: #b8860b;
+    --gold-light: #d4a843;
+    --rust: #8b4513;
+    --sage: #4a5240;
+    --warm-gray: #8c8070;
+    --accent: #c9a84c;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    overflow-x: hidden;
+  }
+
+  /* ─── NOISE TEXTURE OVERLAY ─── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.6;
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 1.2rem 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(245, 240, 232, 0.88);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(184, 134, 11, 0.15);
+  }
+
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--warm-gray);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--gold); }
+
+  /* ─── HERO ─── */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-left {
+    background: var(--ink);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 8rem 4rem 5rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-left::before {
+    content: '';
+    position: absolute;
+    top: -20%;
+    left: -20%;
+    width: 80%;
+    height: 80%;
+    background: radial-gradient(circle, rgba(184,134,11,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.2s forwards;
+  }
+
+  .hero-name {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3.5rem, 6vw, 5.5rem);
+    font-weight: 900;
+    color: var(--paper);
+    line-height: 0.95;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.4s forwards;
+  }
+
+  .hero-name em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .hero-title {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 300;
+    color: var(--warm-gray);
+    margin-top: 1.5rem;
+    letter-spacing: 0.04em;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.6s forwards;
+  }
+
+  .hero-divider {
+    width: 40px;
+    height: 1px;
+    background: var(--gold);
+    margin: 2rem 0;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.7s forwards;
+  }
+
+  .hero-tagline {
+    font-size: 0.9rem;
+    color: rgba(245,240,232,0.6);
+    line-height: 1.7;
+    max-width: 340px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.8s forwards;
+  }
+
+  .hero-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 2.5rem;
+    padding: 0.9rem 1.8rem;
+    background: transparent;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: all 0.3s;
+    opacity: 0;
+    animation: fadeUp 0.8s 1s forwards;
+  }
+
+  .hero-cta:hover {
+    background: var(--gold);
+    color: var(--ink);
+  }
+
+  .hero-right {
+    background: var(--cream);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8rem 4rem 5rem;
+    position: relative;
+  }
+
+  .hero-right::after {
+    content: '"';
+    font-family: 'Playfair Display', serif;
+    font-size: 20rem;
+    color: rgba(184,134,11,0.06);
+    position: absolute;
+    top: -2rem;
+    right: 2rem;
+    line-height: 1;
+    pointer-events: none;
+  }
+
+  .hero-stats {
+    display: grid;
+    gap: 2.5rem;
+    width: 100%;
+    max-width: 380px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.6s forwards;
+  }
+
+  .stat-item {
+    border-left: 2px solid var(--gold);
+    padding-left: 1.5rem;
+  }
+
+  .stat-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--warm-gray);
+    margin-top: 0.4rem;
+  }
+
+  /* ─── SECTION BASE ─── */
+  section {
+    padding: 7rem 0;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 3rem;
+  }
+
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1rem;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 700;
+    line-height: 1.1;
+    color: var(--ink);
+    margin-bottom: 3rem;
+  }
+
+  /* ─── ABOUT ─── */
+  #about {
+    background: var(--ink);
+    color: var(--paper);
+  }
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 6rem;
+    align-items: start;
+  }
+
+  .about-sticky { position: sticky; top: 7rem; }
+
+  #about .section-title { color: var(--paper); }
+
+  .about-body {
+    font-size: 1.05rem;
+    line-height: 1.9;
+    color: rgba(245,240,232,0.7);
+    margin-bottom: 2rem;
+  }
+
+  .competency-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    margin-top: 2rem;
+  }
+
+  .competency-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    padding: 0.6rem 1rem;
+    border: 1px solid rgba(184,134,11,0.3);
+    color: var(--accent);
+    text-transform: uppercase;
+  }
+
+  /* ─── EXPERIENCE ─── */
+  #experience { background: var(--paper); }
+
+  .timeline {
+    position: relative;
+    padding-left: 2rem;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: linear-gradient(to bottom, var(--gold), transparent);
+  }
+
+  .timeline-item {
+    position: relative;
+    padding: 0 0 4rem 3rem;
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: all 0.6s ease;
+  }
+
+  .timeline-item.visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .timeline-dot {
+    position: absolute;
+    left: -2rem;
+    top: 0.35rem;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--gold);
+    transform: translateX(50%);
+  }
+
+  .timeline-period {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.5rem;
+  }
+
+  .timeline-company {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 0.25rem;
+  }
+
+  .timeline-role {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--warm-gray);
+    letter-spacing: 0.04em;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+  }
+
+  .timeline-bullets {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .timeline-bullets li {
+    font-size: 0.9rem;
+    line-height: 1.7;
+    color: #4a4030;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .timeline-bullets li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--gold);
+  }
+
+  /* ─── SKILLS ─── */
+  #skills { background: var(--cream); }
+
+  .skills-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+  }
+
+  .tools-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .tool-pill {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    padding: 0.5rem 1rem;
+    background: var(--paper);
+    border: 1px solid rgba(26,18,8,0.1);
+    color: var(--ink);
+    transition: all 0.2s;
+  }
+
+  .tool-pill:hover {
+    background: var(--gold);
+    color: var(--paper);
+    border-color: var(--gold);
+  }
+
+  .training-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .training-list li {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.06em;
+    color: var(--ink);
+  }
+
+  .training-list li::before {
+    content: '';
+    display: block;
+    width: 24px;
+    height: 1px;
+    background: var(--gold);
+    flex-shrink: 0;
+  }
+
+  /* ─── EDUCATION ─── */
+  #education {
+    background: var(--ink);
+    color: var(--paper);
+    text-align: center;
+  }
+
+  #education .section-label { text-align: center; }
+  #education .section-title { color: var(--paper); margin-bottom: 1rem; }
+
+  .edu-degree {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    font-style: italic;
+    color: var(--accent);
+    margin: 2rem 0 0.5rem;
+  }
+
+  .edu-school {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.8rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--warm-gray);
+    margin-bottom: 0.5rem;
+  }
+
+  .edu-years {
+    font-size: 0.85rem;
+    color: rgba(245,240,232,0.4);
+  }
+
+  /* ─── CONTACT ─── */
+  #contact { background: var(--paper); }
+
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: start;
+  }
+
+  .contact-intro {
+    font-size: 1.05rem;
+    line-height: 1.9;
+    color: var(--warm-gray);
+  }
+
+  .contact-items {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .contact-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .contact-item-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  .contact-item-value {
+    font-size: 0.95rem;
+    color: var(--ink);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .contact-item-value:hover { color: var(--gold); }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: var(--ink);
+    padding: 2rem 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid rgba(184,134,11,0.15);
+  }
+
+  .footer-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.9rem;
+    color: var(--warm-gray);
+  }
+
+  .footer-copy {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    color: rgba(140,128,112,0.5);
+  }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.7s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; }
+    .hero-right { display: none; }
+    .about-grid, .skills-layout, .contact-grid { grid-template-columns: 1fr; }
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { gap: 1.5rem; }
+    .container { padding: 0 1.5rem; }
+    .hero-left { padding: 7rem 2rem 4rem; }
+  }
+
+  @media (max-width: 600px) {
+    .nav-links { display: none; }
+    .competency-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">SFP</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-left">
+    <span class="hero-eyebrow">Bookkeeper Specialist · Davao, Philippines</span>
+    <h1 class="hero-name">Shem <em>F.</em><br>Parcon</h1>
+    <p class="hero-title">Financial Accuracy. Operational Clarity.</p>
+    <div class="hero-divider"></div>
+    <p class="hero-tagline">Results-driven bookkeeper specializing in QuickBooks, bank reconciliation, and accounts payable/receivable management — with a track record of zero errors and 100% compliance.</p>
+    <a href="mailto:shemparcon1177@gmail.com" class="hero-cta">
+      <span>Get in Touch</span>
+      <span>→</span>
+    </a>
+  </div>
+  <div class="hero-right">
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="stat-number">8+</div>
+        <div class="stat-label">Years of experience</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">300+</div>
+        <div class="stat-label">Invoices managed monthly</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">98%</div>
+        <div class="stat-label">Issue resolution rate</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">100%</div>
+        <div class="stat-label">Documentation compliance</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-sticky reveal">
+        <div class="section-label">About Me</div>
+        <h2 class="section-title">Where precision meets purpose</h2>
+      </div>
+      <div>
+        <p class="about-body reveal">
+          I'm a Bookkeeper Specialist with a BS in Accounting Technology and over eight years of hands-on experience across financial recordkeeping, inventory auditing, accounts receivable, and operational management. My work is driven by one principle: every number tells a story, and it has to be accurate.
+        </p>
+        <p class="about-body reveal">
+          From managing 300+ invoices monthly at Davao Metro Shuttle to supervising a team of 12 moderators for international crypto communities, I bring the same disciplined attention to detail whether I'm reconciling ledgers or leading cross-functional teams.
+        </p>
+        <div class="competency-grid reveal">
+          <span class="competency-tag">Accounts Receivable & Payable</span>
+          <span class="competency-tag">Bank Reconciliation</span>
+          <span class="competency-tag">Financial Recordkeeping</span>
+          <span class="competency-tag">Inventory Management</span>
+          <span class="competency-tag">Workflow Optimization</span>
+          <span class="competency-tag">Team Leadership</span>
+          <span class="competency-tag">Cash Handling</span>
+          <span class="competency-tag">Data Analysis</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="container">
+    <div class="section-label reveal">Work Experience</div>
+    <h2 class="section-title reveal">A career built on<br>financial integrity</h2>
+
+    <div class="timeline">
+
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-period">2022 – 2026</div>
+        <div class="timeline-company">Brandless PH</div>
+        <div class="timeline-role">Moderator Lead / Project Manager</div>
+        <ul class="timeline-bullets">
+          <li>Supervised a team of 12 moderators providing real-time support for international crypto communities, achieving a 98% issue resolution rate within SLA targets.</li>
+          <li>Developed and implemented SOPs and workflow processes, reducing response turnaround time by 35% and improving cross-team coordination.</li>
+          <li>Managed team schedules and monitored performance metrics, maintaining 100% documentation compliance and decreasing repeat tickets by 20%.</li>
+        </ul>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-period">2021 – 2022</div>
+        <div class="timeline-company">Brandless PH</div>
+        <div class="timeline-role">Community Moderator</div>
+        <ul class="timeline-bullets">
+          <li>Monitored 5+ online communities daily, ensuring 100% compliance with platform guidelines for over 100,000 users.</li>
+          <li>Resolved 95% of user concerns independently, escalating only 5% of cases to internal teams.</li>
+          <li>Maintained detailed incident records, leading to a 25% reduction in recurring issues.</li>
+        </ul>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-period">2021</div>
+        <div class="timeline-company">Davao Metro Shuttle Corporation</div>
+        <div class="timeline-role">Accounts Receivable Assistant</div>
+        <ul class="timeline-bullets">
+          <li>Managed tracking of 300+ invoices monthly, ensuring 100% on-time recording of payments and accurate customer balances.</li>
+          <li>Reconciled AR records with payment transactions, identifying and resolving discrepancies within 48 hours.</li>
+        </ul>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-period">2018 – 2021</div>
+        <div class="timeline-company">Rosabaya Distributor Inc.</div>
+        <div class="timeline-role">Auditor</div>
+        <ul class="timeline-bullets">
+          <li>Conducted monthly inventory audits of 70+ items, reconciling physical counts with system records for 100% stock accuracy.</li>
+          <li>Recorded and maintained inventory data, reducing errors by 30%.</li>
+          <li>Implemented post-audit adjustments, resolving discrepancies within 24 hours.</li>
+        </ul>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-period">2017 – 2018</div>
+        <div class="timeline-company">MacDell Enterprise</div>
+        <div class="timeline-role">Bookkeeper</div>
+        <ul class="timeline-bullets">
+          <li>Recorded daily sales transactions accurately, ensuring organized and up-to-date financial records.</li>
+          <li>Maintained proper documentation of invoices and payment receipts.</li>
+          <li>Assisted in basic financial reconciliation by verifying recorded sales against payments.</li>
+        </ul>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-period">2017</div>
+        <div class="timeline-company">Aquanica Water Refilling Station</div>
+        <div class="timeline-role">Cashier</div>
+        <ul class="timeline-bullets">
+          <li>Managed daily cash transactions with accuracy, ensuring balanced end-of-day cash reports.</li>
+          <li>Tracked inventory levels and maintained organized records of sales data.</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="container">
+    <div class="section-label reveal">Tools & Training</div>
+    <h2 class="section-title reveal">The software I trust,<br>the skills I've earned</h2>
+    <div class="skills-layout">
+      <div class="reveal">
+        <p style="font-family:'DM Mono',monospace; font-size:0.68rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--warm-gray); margin-bottom:1.2rem;">Software & Tools</p>
+        <div class="tools-grid">
+          <span class="tool-pill">QuickBooks Online</span>
+          <span class="tool-pill">Xero</span>
+          <span class="tool-pill">Microsoft Excel</span>
+          <span class="tool-pill">Google Sheets</span>
+          <span class="tool-pill">Google Workspace</span>
+          <span class="tool-pill">Trello</span>
+          <span class="tool-pill">ClickUp</span>
+          <span class="tool-pill">Notion</span>
+          <span class="tool-pill">Asana</span>
+          <span class="tool-pill">Microsoft Word</span>
+          <span class="tool-pill">Microsoft PowerPoint</span>
+          <span class="tool-pill">Calendly</span>
+          <span class="tool-pill">Zoom</span>
+          <span class="tool-pill">Slack</span>
+          <span class="tool-pill">Discord</span>
+          <span class="tool-pill">Apollo</span>
+          <span class="tool-pill">Telegram</span>
+          <span class="tool-pill">WhatsApp</span>
+        </div>
+      </div>
+      <div class="reveal">
+        <p style="font-family:'DM Mono',monospace; font-size:0.68rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--warm-gray); margin-bottom:1.2rem;">Certifications & Training</p>
+        <ul class="training-list">
+          <li>QuickBooks Online Certification</li>
+          <li>Xero Accounting Software</li>
+          <li>VA Foundation Training</li>
+          <li>BS Accounting Technology — UM Tagum College</li>
+        </ul>
+        <div style="margin-top:3rem; padding:2rem; border:1px solid rgba(184,134,11,0.2); background:var(--paper);">
+          <p style="font-family:'Playfair Display',serif; font-size:1.1rem; font-style:italic; color:var(--ink); line-height:1.6;">
+            "Every discrepancy is a story waiting to be corrected. I find it. I fix it. Every time."
+          </p>
+          <p style="font-family:'DM Mono',monospace; font-size:0.65rem; letter-spacing:0.1em; color:var(--warm-gray); margin-top:1rem; text-transform:uppercase;">— Shem F. Parcon</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section id="education">
+  <div class="container" style="text-align:center;">
+    <div class="section-label reveal">Education</div>
+    <h2 class="section-title reveal" style="color:var(--paper);">The foundation of<br>financial expertise</h2>
+    <div class="edu-degree reveal">Bachelor of Science in Accounting Technology</div>
+    <div class="edu-school reveal">UM Tagum College · Tagum City, Philippines</div>
+    <div class="edu-years reveal">2012 – 2017</div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="container">
+    <div class="contact-grid">
+      <div class="reveal">
+        <div class="section-label">Contact</div>
+        <h2 class="section-title">Let's work<br>together</h2>
+        <p class="contact-intro">Looking for a meticulous bookkeeper who delivers accuracy and peace of mind? I'm available for freelance and full-time bookkeeping roles. Reach out — I'd love to talk numbers.</p>
+      </div>
+      <div class="contact-items reveal">
+        <div class="contact-item">
+          <span class="contact-item-label">Phone</span>
+          <a href="tel:+639657551175" class="contact-item-value">+63 965 755 1175</a>
+        </div>
+        <div class="contact-item">
+          <span class="contact-item-label">Email</span>
+          <a href="/cdn-cgi/l/email-protection#67140f020a1706150408095656505027000a060e0b4904080a" class="contact-item-value"><span class="__cf_email__" data-cfemail="d6a5beb3bba6b7a4b5b9b8e7e7e1e196b1bbb7bfbaf8b5b9bb">[email&#160;protected]</span></a>
+        </div>
+        <div class="contact-item">
+          <span class="contact-item-label">Location</span>
+          <span class="contact-item-value">Davao de Oro, 8802, Philippines</span>
+        </div>
+        <div class="contact-item">
+          <span class="contact-item-label">Availability</span>
+          <span class="contact-item-value">Open to freelance & full-time roles</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-name">Shem F. Parcon</span>
+  <span class="footer-copy">© 2026 · Bookkeeper Specialist · Davao, Philippines</span>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.
